@@ -151,11 +151,18 @@ function initGame(){
     requestAnimationFrame(gameLoop);
   }
 
-  document.addEventListener("keydown", function(e){
-    if(e.code === "Space"){
-      bird.velocity = bird.lift;
-    }
-  });
+// PC keyboard
+document.addEventListener("keydown", function(e){
+  if(e.code === "Space"){
+    bird.velocity = bird.lift;
+  }
+});
+
+// Mobile tap
+document.addEventListener("touchstart", function(){
+  bird.velocity = bird.lift;
+});
+  
 
   gameLoop();
 }
