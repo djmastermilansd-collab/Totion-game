@@ -60,7 +60,8 @@ function startGame(color){
 function initGame(){
   const canvas = document.getElementById("gameCanvas");
   const ctx = canvas.getContext("2d");
-
+const birdImg = new Image();
+birdImg.src = "bird.png";
   let bird = {
     x: 80,
     y: 300,
@@ -75,11 +76,9 @@ function initGame(){
   let score = 0;
   let gameOver = false;
 
-  function drawBird(){
-    ctx.fillStyle = selectedColor;
-    ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
-  }
-
+ function drawBird(){
+  ctx.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
+}
   function drawPipes(){
     ctx.fillStyle = "green";
     pipes.forEach(pipe => {
@@ -149,8 +148,7 @@ function initGame(){
     drawScore();
     update();
     requestAnimationFrame(gameLoop);
-  }
-
+  
 // PC keyboard
 document.addEventListener("keydown", function(e){
   if(e.code === "Space"){
@@ -164,7 +162,9 @@ document.addEventListener("touchstart", function(){
 });
   
 
+  birdImg.onload = function(){
   gameLoop();
+};
 }
 </script>
 
