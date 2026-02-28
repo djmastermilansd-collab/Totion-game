@@ -2,75 +2,67 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Flappy Select</title>
+<title>Flappy Milan</title>
+
 <style>
-body {
+body{
   margin:0;
   background:#111;
-  color:white;
   text-align:center;
+  color:white;
+  font-family:Arial;
 }
 
-#menu {
-  padding-top:50px;
+#menu{
+  padding-top:80px;
 }
 
-.bird-option {
-  width:70px;
-  height:70px;
-  margin:10px;
-  border-radius:50%;
-  display:inline-block;
+button{
+  padding:15px 30px;
+  font-size:20px;
   cursor:pointer;
 }
 
-#bird1 { background: yellow; }
-#bird2 { background: red; }
-#bird3 { background: blue; }
-
-canvas {
+canvas{
   display:none;
-  background:#70c5ce;
   margin:auto;
+  background:#70c5ce;
 }
 </style>
 </head>
 <body>
 
 <div id="menu">
-  <h1>Select Your Bird</h1>
-
-  <div id="bird1" class="bird-option" onclick="startGame('yellow')"></div>
-  <div id="bird2" class="bird-option" onclick="startGame('red')"></div>
-  <div id="bird3" class="bird-option" onclick="startGame('blue')"></div>
+  <h1>Flappy Milan</h1>
+  <button onclick="startGame()">START GAME</button>
 </div>
 
 <canvas id="gameCanvas" width="400" height="600"></canvas>
 
 <script>
-let selectedColor = null;
 
-function startGame(color){
-  selectedColor = color;
-  document.getElementById('menu').style.display = 'none';
-  document.getElementById('gameCanvas').style.display = 'block';
+function startGame(){
+  document.getElementById("menu").style.display="none";
+  document.getElementById("gameCanvas").style.display="block";
   initGame();
 }
 
 function initGame(){
+
   const canvas = document.getElementById("gameCanvas");
-  const birdImg = new Image();
-birdImg.src = "bird.png";
   const ctx = canvas.getContext("2d");
-const birdImg = new Image();
-birdImg.src = "bird.png";
+
+  // IMAGE
+  const birdImg = new Image();
+  birdImg.src = "bird.png";
+
   let bird = {
     x: 80,
     y: 300,
-    width: 30,
-    height: 30,
+    width: 60,
+    height: 60,
     gravity: 0.5,
-    lift: -8,
+    lift: -9,
     velocity: 0
   };
 
@@ -78,18 +70,20 @@ birdImg.src = "bird.png";
   let score = 0;
   let gameOver = false;
 
- function drawBird(){
-  ctx.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
-}
+  function drawBird(){
+    ctx.drawImage(birdImg, bird.x, bird.y, bird.width, bird.height);
+  }
+
   function drawPipes(){
     ctx.fillStyle = "green";
-    pipes.forEach(pipe => {
-      ctx.fillRect(pipe.x, 0, pipe.width, pipe.top);
-      ctx.fillRect(pipe.x, canvas.height - pipe.bottom, pipe.width, pipe.bottom);
+    pipes.forEach(pipe=>{
+      ctx.fillRect(pipe.x,0,pipe.width,pipe.top);
+      ctx.fillRect(pipe.x,canvas.height-pipe.bottom,pipe.width,pipe.bottom);
     });
   }
 
   function update(){
+
     if(gameOver) return;
 
     bird.velocity += bird.gravity;
@@ -99,7 +93,7 @@ birdImg.src = "bird.png";
       endGame();
     }
 
-    pipes.forEach(pipe => {
+    pipes.forEach(pipe=>{
       pipe.x -= 2;
 
       if(
@@ -115,7 +109,7 @@ birdImg.src = "bird.png";
       }
     });
 
-    pipes = pipes.filter(pipe => pipe.x + pipe.width > 0);
+    pipes = pipes.filter(pipe=> pipe.x + pipe.width > 0);
   }
 
   function endGame(){
@@ -125,22 +119,22 @@ birdImg.src = "bird.png";
   }
 
   function spawnPipe(){
-    let top = Math.random() * 200 + 50;
+    let top = Math.random()*200 + 50;
     let gap = 150;
     pipes.push({
       x: canvas.width,
-      width: 50,
+      width: 60,
       top: top,
       bottom: canvas.height - top - gap
     });
   }
 
-  setInterval(spawnPipe, 2000);
+  setInterval(spawnPipe,2000);
 
   function drawScore(){
-    ctx.fillStyle = "white";
-    ctx.font = "30px Arial";
-    ctx.fillText("Score: " + score, 10, 40);
+    ctx.fillStyle="white";
+    ctx.font="30px Arial";
+    ctx.fillText("Score: " + score, 20, 40);
   }
 
   function gameLoop(){
@@ -150,25 +144,26 @@ birdImg.src = "bird.png";
     drawScore();
     update();
     requestAnimationFrame(gameLoop);
-  
-// PC keyboard
-document.addEventListener("keydown", function(e){
-  if(e.code === "Space"){
-    bird.velocity = bird.lift;
   }
-});
 
-// Mobile tap
-document.addEventListener("touchstart", function(){
-  bird.velocity = bird.lift;
-});
-  
+  // PC keyboard
+  document.addEventListener("keydown", function(e){
+    if(e.code === "Space"){
+      bird.velocity = bird.lift;
+    }
+  });
+
+  // Mobile tap
+  document.addEventListener("touchstart", function(){
+    bird.velocity = bird.lift;
+  });
 
   birdImg.onload = function(){
-  gameLoop();
-};
-}
-</script>
+    gameLoop();
+  };
 
+}
+
+</script>
 </body>
 </html>
