@@ -2,8 +2,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<title>Flappy Sreehari</title>
+
+<!-- MOBILE ZOOM FIX -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Flappy sreehari</title>
 
 <style>
 body{
@@ -12,6 +14,8 @@ body{
   text-align:center;
   color:white;
   font-family:Arial;
+  overflow:hidden;
+  touch-action:manipulation;
 }
 
 #menu{
@@ -28,6 +32,7 @@ canvas{
   display:none;
   margin:auto;
   background:#70c5ce;
+  touch-action:none;
 }
 </style>
 </head>
@@ -53,15 +58,18 @@ function initGame(){
   const canvas = document.getElementById("gameCanvas");
   const ctx = canvas.getContext("2d");
 
-  // IMAGE
+  // BIRD IMAGE
   const birdImg = new Image();
   birdImg.src = "bird.png";
+
+  // JUMP SOUND
+  const jumpSound = new Audio("jump.mp3");
 
   let bird = {
     x: 80,
     y: 300,
-   width: 40,
-   height: 40,
+    width: 50,
+    height: 50,
     gravity: 0.5,
     lift: -9,
     velocity: 0
@@ -147,16 +155,22 @@ function initGame(){
     requestAnimationFrame(gameLoop);
   }
 
-  // PC keyboard
+  function jump(){
+    bird.velocity = bird.lift;
+    jumpSound.currentTime = 0;
+    jumpSound.play();
+  }
+
+  // PC
   document.addEventListener("keydown", function(e){
     if(e.code === "Space"){
-      bird.velocity = bird.lift;
+      jump();
     }
   });
 
-  // Mobile tap
+  // Mobile
   document.addEventListener("touchstart", function(){
-    bird.velocity = bird.lift;
+    jump();
   });
 
   birdImg.onload = function(){
